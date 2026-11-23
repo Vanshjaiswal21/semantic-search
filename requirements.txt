@@ -1,0 +1,12 @@
+pandas
+numpy
+scikit-learn
+sentence-transformers
+faiss-cpu
+rank_bm25
+fastapi
+uvicorn
+streamlit
+pyarrow
+tqdm
+ipykernel
