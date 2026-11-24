@@ -77,6 +77,14 @@ every document per query, so a proper BM25 engine would be faster.
 - All methods returned relevant bags. The re-ranker only reordered them, which shows
   it helps less on easy queries.
 
+## Demo
+
+![Side-by-side comparison: BM25 vs Hybrid + Re-ranker](docs/demo_compare.png)
+
+Run it locally:
+1. Start the API: `uvicorn app.api:app`
+2. In a second terminal, start the UI: `streamlit run app/ui.py`
+
 
 ## Project structure
 ```
@@ -95,6 +103,7 @@ pip install -r requirements.txt
 1. Download the ESCI parquet files into `data/` (https://github.com/amazon-science/esci-data)
 2. Run the notebooks in order (02 to 09) to build the corpus, embeddings and results
 3. Start the API: `uvicorn app.api:app`
+4. In a second terminal, start the UI: `streamlit run app/ui.py`
 
 ## Limitations
 - The corpus is a 40k-product sample, not a full catalog
