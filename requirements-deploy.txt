@@ -1,0 +1,10 @@
+pandas
+numpy
+pyarrow
+sentence-transformers
+faiss-cpu
+rank_bm25
+fastapi
+uvicorn
+streamlit
+requests
