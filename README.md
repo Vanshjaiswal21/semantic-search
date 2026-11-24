@@ -48,6 +48,36 @@ Query -> BM25 + Semantic search -> Hybrid fusion (RRF, top 20-50) -> Cross-encod
   `cross-encoder/ms-marco-MiniLM-L-6-v2` (re-ranker). Neither was trained on
   shopping data.
 
+## Latency (laptop CPU, average of 3 new queries)
+Latency was measured through the FastAPI endpoint on a laptop CPU, using a new
+query for each request so the cache was not hit. The first request of each method
+was discarded as warm-up.
+
+| Method | Latency | NDCG@10 |
+|---|---|---|
+| BM25 | 187 ms | 0.4952 |
+| Semantic | 47 ms | 0.4986 |
+| Hybrid | 216 ms | 0.5335 |
+| Hybrid + Re-ranker (20 candidates) | ~1.5 s | 0.5953 |
+
+![Accuracy vs latency](docs/accuracy_vs_latency.png)
+
+The re-ranker gives the best accuracy but is about 7x slower than hybrid.
+A GPU, a smaller model, or caching would reduce this. `rank_bm25` also scores
+every document per query, so a proper BM25 engine would be faster.
+
+### Example queries
+
+**"gift for a 5 year old boy"**
+- BM25 returned a "50th Birthday Gift, 50 Year Old T-Shirt" at rank 4, because it matched the words "gift" and "year old".
+- Semantic and hybrid returned mostly pink, girl-oriented products.
+- The re-ranker put dinosaur toys for 5 year old boys at rank 1. One miss remains: a girls' hair chalk set at rank 5.
+
+**"laptop bag for 15 inch"**
+- All methods returned relevant bags. The re-ranker only reordered them, which shows
+  it helps less on easy queries.
+
+
 ## Project structure
 ```
 src/        bm25_search.py, vector_search.py, hybrid.py, rerank.py, evaluate.py
